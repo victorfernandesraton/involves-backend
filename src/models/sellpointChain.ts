@@ -1,6 +1,6 @@
-import Entity from "./entity";
+import Entity, { IEnttityParams } from "./entity";
 
-export interface ISellpointChainParams extends Entity {
+export interface ISellpointChainParams extends IEnttityParams {
   st_sellpointchain: string;
 }
 export default class SellpointChain extends Entity {
@@ -9,8 +9,6 @@ export default class SellpointChain extends Entity {
   constructor(params: ISellpointChainParams) {
     super(params);
     this.st_sellpointchain = params.st_sellpointchain;
-    this.st_unique_name = params.st_sellpointchain
-      .toUpperCase()
-      .replaceAll(" ", "_");
+    this.st_unique_name = params.st_sellpointchain.toUpperCase();
   }
 }

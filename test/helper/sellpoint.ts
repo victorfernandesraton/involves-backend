@@ -1,5 +1,7 @@
 import GetSellPoint from "../../src/external/service/getSellpoint";
 import SellPoint from "../../src/models/sellpoint";
+import SellpointChain from "../../src/models/sellpointChain";
+import { sellpointchain } from "./sellPointChain";
 
 export const sellpointBaseA = [
   {
@@ -52,7 +54,13 @@ export class GetSellPointsServiceA extends GetSellPoint {
       throw new Error(`Not find SellPoint by cnpj/${cnpjId}`);
     }
     const data = new SellPoint({
-      fk_sellpointchain: "1",
+      fk_sellpointchain:
+        sellpointchain.find(
+          (item) => response.rede.toUpperCase() === item.name.toUpperCase()
+        )?.id ??
+        new SellpointChain({
+          st_sellpointchain: response.rede,
+        }).id,
       fk_sellpointtype: "1",
       st_address: response.endereco,
       st_sellpoint: response.name,
@@ -70,7 +78,13 @@ export class GetSellPointsServiceA extends GetSellPoint {
     return response.map(
       (item) =>
         new SellPoint({
-          fk_sellpointchain: "1",
+          fk_sellpointchain:
+            sellpointchain.find(
+              (chain) => item.rede.toUpperCase() === chain.name.toUpperCase()
+            )?.id ??
+            new SellpointChain({
+              st_sellpointchain: item.rede,
+            }).id,
           fk_sellpointtype: "1",
           st_address: item.endereco,
           st_sellpoint: item.name,
@@ -90,7 +104,13 @@ export class GetSellPointsServiceB extends GetSellPoint {
       throw new Error(`Not find SellPoint by cnpj/${cnpjId}`);
     }
     const data = new SellPoint({
-      fk_sellpointchain: "1",
+      fk_sellpointchain:
+        sellpointchain.find(
+          (item) => response.chain.toUpperCase() === item.name.toUpperCase()
+        )?.id ??
+        new SellpointChain({
+          st_sellpointchain: response.chain,
+        }).id,
       fk_sellpointtype: "1",
       st_address: response.address,
       st_sellpoint: response.name,
@@ -108,7 +128,14 @@ export class GetSellPointsServiceB extends GetSellPoint {
     return response.map(
       (item) =>
         new SellPoint({
-          fk_sellpointchain: "1",
+          fk_sellpointchain:
+            sellpointchain.find(
+              (element) =>
+                item.chain.toUpperCase() === element.name.toUpperCase()
+            )?.id ??
+            new SellpointChain({
+              st_sellpointchain: item.chain,
+            }).id,
           fk_sellpointtype: "1",
           st_address: item.address,
           st_sellpoint: item.name,

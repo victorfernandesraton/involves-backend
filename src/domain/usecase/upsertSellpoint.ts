@@ -1,5 +1,6 @@
 import GetSellPoint from "../../external/service/getSellpoint";
 import SellPoint from "../../models/sellpoint";
+import UpsertSellPointError from "../errors/upsertSellpointError";
 export enum GetHandlersByTypeEnum {
   CHAIN,
   CNPJ,
@@ -82,7 +83,11 @@ export default class UpsertSellPoint {
           )
         );
       } catch (error) {
-        throw error;
+        if (error instanceof Error) {
+          throw new UpsertSellPointError(error.message);
+        } else {
+          throw new UpsertSellPointError("umknow error");
+        }
       }
     } else {
       try {
@@ -96,7 +101,11 @@ export default class UpsertSellPoint {
         const handler = this.getHandlersByType(type, handlerInstance);
         response = await handler(this.parseParansByHandlerType(type, params));
       } catch (error) {
-        throw error;
+        if (error instanceof Error) {
+          throw new UpsertSellPointError(error.message);
+        } else {
+          throw new UpsertSellPointError("umknow error");
+        }
       }
     }
     if (response instanceof Array) {
