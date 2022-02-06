@@ -120,6 +120,21 @@ export default class UpsertSellPoint {
     } else {
       data.push(response);
     }
+    try {
+      await this.repository.upsertManySellPoint(
+        data.map((item) => ({
+          data: item,
+          cnpj: item.st_cnpj,
+          sellpointId: item.id,
+        }))
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new UpsertSellPointError(error.message);
+      } else {
+        throw new UpsertSellPointError("umknow error");
+      }
+    }
     return data;
   }
 }
