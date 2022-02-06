@@ -1,0 +1,22 @@
+{
+  "name": "involves-backend",
+  "version": "1.0.0",
+  "description": "Backend for involves challange",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victorfernandesraton/involves-backend.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Victor Raton"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/victorfernandesraton/involves-backend/issues"
+  },
+  "homepage": "https://github.com/victorfernandesraton/involves-backend#readme"
+}
