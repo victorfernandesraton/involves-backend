@@ -4,10 +4,18 @@ export interface IServiceUpsertProduct {
   getProductById(productId: string): Promise<Product>;
   id: string;
 }
+export interface IUpsertProductRepository {
+  upsertProductByExternalId(productId: string, data: Product): Promise<Product>;
+}
 export default class UpsertProduct {
   readonly services: IServiceUpsertProduct[];
-  constructor(services: IServiceUpsertProduct[]) {
+  repository: IUpsertProductRepository;
+  constructor(
+    services: IServiceUpsertProduct[],
+    repository: IUpsertProductRepository
+  ) {
     this.services = services;
+    this.repository = repository;
   }
 
   async execute(productId: string, service: any = null): Promise<Product> {
@@ -30,7 +38,12 @@ export default class UpsertProduct {
       return Promise.reject(error);
     }
     if (result) {
-      return result;
+      try {
+        await this.repository.upsertProductByExternalId(productId, result);
+        return result;
+      } catch (error) {
+        return Promise.reject(error);
+      }
     } else {
       return Promise.reject(new Error(`Not find product/${productId}`));
     }
