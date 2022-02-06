@@ -1,3 +1,6 @@
+import GetSellPoint from "../../src/external/service/getSellpoint";
+import SellPoint from "../../src/models/sellpoint";
+
 export const sellpointBaseA = [
   {
     name: "Supermecado Big Barreiros",
@@ -27,3 +30,41 @@ export const sellpointBaseB = [
 ];
 
 export const sellpoints = [...sellpointBaseA, ...sellpointBaseB];
+
+export class GetSellPointsServiceA extends GetSellPoint {
+  constructor() {
+    super("serviceA");
+  }
+  async getSellPointByCnpj(cnpjId: string): Promise<SellPoint> {
+    const response = sellpointBaseA.find((item) => item.cnpj === cnpjId);
+    if (!response) {
+      throw new Error(`Not find SellPoint by cnpj/${cnpjId}`);
+    }
+    const data = new SellPoint({
+      fk_sellpointchain: "1",
+      fk_sellpointtype: "1",
+      st_address: response.endereco,
+      st_sellpoint: response.name,
+      st_cnpj: response.cnpj,
+    });
+    return data;
+  }
+  async getSellPointsByChain(chainUniqueName: string): Promise<SellPoint[]> {
+    const response = sellpointBaseA.filter(
+      (item) => item.rede.toUpperCase().replace(" ", "_") === chainUniqueName
+    );
+    if (!response.length) {
+      throw new Error(`Not find SellPoint by cnpj/${chainUniqueName}`);
+    }
+    return response.map(
+      (item) =>
+        new SellPoint({
+          fk_sellpointchain: "1",
+          fk_sellpointtype: "1",
+          st_address: item.endereco,
+          st_sellpoint: item.name,
+          st_cnpj: item.cnpj,
+        })
+    );
+  }
+}

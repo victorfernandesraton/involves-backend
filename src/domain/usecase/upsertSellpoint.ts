@@ -15,7 +15,7 @@ export interface IUpsertSellPointRepository {
 
 export interface IUpsertPSellPointParams {
   services: GetSellPoint[];
-  repository: IUpsertSellPointRepository;
+  // repository: IUpsertSellPointRepository;
 }
 
 export default class UpsertSellPoint {
