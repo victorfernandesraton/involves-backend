@@ -1,12 +1,11 @@
-import Entity, { IEnttityParams } from "./entity";
+import Entity, { IEnttityParams } from "../../models/entity";
+
 export enum AuditEntittyEnum {
   PRODUCT,
   SELLPOINT,
-  SELL,
 }
 
 export interface IAuditOrigin {
-  st_system: string;
   endpoint?: string;
   request?: any;
   response?: any;
@@ -15,13 +14,16 @@ export interface IAuditOrigin {
 export interface IAuditParams extends IEnttityParams {
   entity: AuditEntittyEnum;
   origin: IAuditOrigin;
+  beforeData?: any;
 }
-export default class Audit extends Entity {
+export default class Audit<T> extends Entity {
   entity: AuditEntittyEnum;
   origin: IAuditOrigin;
+  beforeData: T;
   constructor(params: IAuditParams) {
     super(params);
     this.entity = params.entity;
     this.origin = params.origin;
+    this.beforeData = params.beforeData;
   }
 }
