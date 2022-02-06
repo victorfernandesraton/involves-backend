@@ -1,8 +1,12 @@
 import Product from "../../models/product";
 
+export interface IServiceUpsertProduct {
+  getProductById(productId: string): Promise<Product>;
+  id: string;
+}
 export default class UpsertProduct {
-  readonly services: any[];
-  constructor(services: any[]) {
+  readonly services: IServiceUpsertProduct[];
+  constructor(services: IServiceUpsertProduct[]) {
     this.services = services;
   }
 
@@ -11,13 +15,13 @@ export default class UpsertProduct {
     try {
       if (!service) {
         const handlers = this.services.map((item) =>
-          item.getProduct(productId)
+          item.getProductById(productId)
         );
         result = await Promise.any(handlers);
       } else {
         const handler = this.services.find((item) => item.id === service);
         if (handler) {
-          result = await handler.getProduct(productId);
+          result = await handler.getProductById(productId);
         } else {
           return Promise.reject(new Error(`not find service ${service}`));
         }
