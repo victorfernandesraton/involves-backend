@@ -1,6 +1,9 @@
 import GetSellPoint from "../../external/service/getSellpoint";
 import SellPoint from "../../models/sellpoint";
-
+export enum GetHandlersByTypeEnum {
+  CHAIN,
+  CNPJ,
+}
 export type TypeGetHandlersByTypeReturn =
   | ((chainUniqueName: string) => Promise<SellPoint[]>)
   | ((productId: string) => Promise<SellPoint>);
@@ -27,29 +30,29 @@ export default class UpsertSellPoint {
   }
 
   private getHandlersByType(
-    type: string,
+    type: GetHandlersByTypeEnum,
     handler: GetSellPoint
   ): TypeGetHandlersByTypeReturn {
     switch (type) {
-      case "chain":
+      case GetHandlersByTypeEnum.CHAIN:
         return handler.getSellPointsByChain;
-      case "cnpj":
+      case GetHandlersByTypeEnum.CNPJ:
       default:
         return handler.getSellPointByCnpj;
     }
   }
 
   private parseParansByHandlerType(
-    type: string,
+    type: GetHandlersByTypeEnum,
     params: IUpsertSellPointExecuteParams
   ): string {
     switch (type) {
-      case "chain":
+      case GetHandlersByTypeEnum.CHAIN:
         if (!params.chain) {
           throw new Error("Not have chain");
         }
         return params.chain;
-      case "cnpj":
+      case GetHandlersByTypeEnum.CNPJ:
       default:
         if (!params.cnpj) {
           throw new Error("Not have cnpj");
@@ -64,7 +67,9 @@ export default class UpsertSellPoint {
   ): Promise<SellPoint[]> {
     let data: SellPoint[] = [];
     let response: SellPoint[] | SellPoint;
-    let type = params.chain ? "chain" : "cnpj";
+    let type = params.chain
+      ? GetHandlersByTypeEnum.CHAIN
+      : GetHandlersByTypeEnum.CNPJ;
 
     if (!service) {
       try {
