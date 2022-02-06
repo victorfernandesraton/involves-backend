@@ -9,6 +9,7 @@ import {
 import { categories } from "../helper/categories";
 import ProductCategory from "../../src/models/productCategory";
 import UpsertProduct from "../../src/domain/usecase/upsertProduct";
+import UpsertProductError from "../../src/domain/errors/upsertProductError";
 
 describe("upsertProduct", () => {
   const usecase = new UpsertProduct(
@@ -27,7 +28,15 @@ describe("upsertProduct", () => {
     expect(result.st_product).toEqual("Biscoito recheada vermelha");
   });
   describe("errors", () => {
-    test.todo("should be not find product ", async () => {});
-    test.todo("should be not find product in specific service", async () => {});
+    test("should be not find product ", async () => {
+      expect(() => usecase.execute("21212")).rejects.toBeInstanceOf(
+        UpsertProductError
+      );
+    });
+    test("should be not find product in specific service", async () => {
+      expect(() =>
+        usecase.execute("9990001113332", "serviceB")
+      ).rejects.toBeInstanceOf(UpsertProductError);
+    });
   });
 });

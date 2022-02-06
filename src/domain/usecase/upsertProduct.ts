@@ -1,4 +1,5 @@
 import Product from "../../models/product";
+import UpsertProductError from "../errors/upsertProductError";
 
 export interface IServiceUpsertProduct {
   getProductById(productId: string): Promise<Product>;
@@ -35,7 +36,11 @@ export default class UpsertProduct {
         }
       }
     } catch (error) {
-      return Promise.reject(error);
+      if (error instanceof Error) {
+        return Promise.reject(new UpsertProductError(error?.message));
+      } else {
+        return Promise.reject(new UpsertProductError("unknown error"));
+      }
     }
     if (resultRequest) {
       try {
