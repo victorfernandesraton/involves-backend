@@ -27,7 +27,7 @@ describe("upsertProduct", () => {
     expect(result.st_product).toEqual("Biscoito recheada vermelha");
   });
   describe("errors", () => {
-    test("should be not find product ", async () => {});
-    test("should be not find product in specific service", async () => {});
+    test.todo("should be not find product ", async () => {});
+    test.todo("should be not find product in specific service", async () => {});
   });
 });
