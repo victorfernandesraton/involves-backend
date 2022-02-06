@@ -44,5 +44,17 @@ describe("InsertSell", () => {
     expect(result[1].dt_register).toEqual(new Date("2022-01-10"));
     expect(result[1].fk_sellpoint).toEqual("2");
   });
-  test.todo("should be insert sell without date");
+  test("should be insert sell without date", async () => {
+    const result = await usecase.execute([
+      {
+        product: productRepository.data[0],
+        sellpoint: sellpointRepository.data[0],
+        value: 55,
+      },
+    ]);
+    expect(result).toHaveLength(1);
+    expect(result[0].dt_register).toBeInstanceOf(Date);
+    expect(result[0].fk_product).toEqual("1");
+    expect(result[0].fk_sellpoint).toEqual("1");
+  });
 });
