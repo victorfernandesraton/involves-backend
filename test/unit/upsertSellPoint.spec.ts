@@ -1,6 +1,7 @@
 import UpsertSellPointError from "../../src/domain/errors/upsertSellpointError";
 import UpsertSellPoint from "../../src/domain/usecase/upsertSellpoint";
-import {
+import { SellRepositoryInMemory } from "../helper/sell";
+import SellPointRepositoryInMemory, {
   GetSellPointsServiceA,
   GetSellPointsServiceB,
 } from "../helper/sellpoint";
@@ -8,6 +9,7 @@ import {
 describe("upsertCellpoint", () => {
   const usecase = new UpsertSellPoint({
     services: [new GetSellPointsServiceA(), new GetSellPointsServiceB()],
+    repository: new SellPointRepositoryInMemory(),
   });
   test("should be a upsert a sellpoint", async () => {
     const result = await usecase.execute({ cnpj: "12345678910" });

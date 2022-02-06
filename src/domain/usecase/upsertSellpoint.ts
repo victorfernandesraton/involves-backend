@@ -14,20 +14,27 @@ export interface IUpsertSellPointExecuteParams {
   chain?: string;
 }
 export interface IUpsertSellPointRepository {
-  upsertSellPointById(sellpointId: string, data: SellPoint): Promise<SellPoint>;
+  upsertOneSellPoint(params: {
+    data: SellPoint;
+    sellpointId?: string;
+    cnpj?: string;
+  }): Promise<SellPoint>;
+  upsertManySellPoint(
+    params: { data: SellPoint; sellpointId?: string; cnpj?: string }[]
+  ): Promise<SellPoint[]>;
 }
 
 export interface IUpsertPSellPointParams {
   services: GetSellPoint[];
-  // repository: IUpsertSellPointRepository;
+  repository: IUpsertSellPointRepository;
 }
 
 export default class UpsertSellPoint {
   readonly services: GetSellPoint[];
-  // repository: IUpsertSellPointRepository;
+  repository: IUpsertSellPointRepository;
   constructor(params: IUpsertPSellPointParams) {
     this.services = params.services;
-    // this.repository = params.repository;
+    this.repository = params.repository;
   }
 
   private getHandlersByType(

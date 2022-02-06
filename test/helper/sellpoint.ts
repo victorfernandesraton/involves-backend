@@ -1,4 +1,8 @@
 import GetSellPoint from "../../src/external/service/getSellpoint";
+import {
+  ISellPoinrInsertOneParams,
+  ISellPointRepository,
+} from "../../src/infra/repository/sellPoint";
 import SellPoint from "../../src/models/sellpoint";
 import SellpointChain from "../../src/models/sellpointChain";
 import { sellpointchain } from "./sellPointChain";
@@ -142,5 +146,40 @@ export class GetSellPointsServiceB extends GetSellPoint {
           st_cnpj: item.cnpj,
         })
     );
+  }
+}
+
+export default class SellPointRepositoryInMemory
+  implements ISellPointRepository
+{
+  data: SellPoint[] = [];
+  async upsertOneSellPoint(
+    params: ISellPoinrInsertOneParams
+  ): Promise<SellPoint> {
+    const oldSellpoint = this.data.find(
+      (item) => item.st_cnpj === params.cnpj || item.id === params.sellpointId
+    );
+    const newSellpoint = new SellPoint({
+      fk_sellpointchain:
+        params.data.fk_sellpointchain ?? oldSellpoint?.fk_sellpointchain,
+      dt_updated: new Date(),
+      st_sellpoint: params.data.st_sellpoint ?? oldSellpoint?.st_sellpoint,
+      fk_sellpointtype:
+        params.data.fk_sellpointtype ?? oldSellpoint?.fk_sellpointtype,
+    });
+    this.data.filter(
+      (item) =>
+        item.st_cnpj != newSellpoint.st_cnpj || newSellpoint.id != item.id
+    );
+    this.data.push(newSellpoint);
+    return newSellpoint;
+  }
+  async upsertManySellPoint(
+    params: ISellPoinrInsertOneParams[]
+  ): Promise<SellPoint[]> {
+    const data = Promise.all(
+      params.map((item) => this.upsertOneSellPoint(item))
+    );
+    return data;
   }
 }
