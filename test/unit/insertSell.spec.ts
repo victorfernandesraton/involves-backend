@@ -18,7 +18,31 @@ describe("InsertSell", () => {
         date: new Date("2019-01-10"),
       },
     ]);
+    expect(result).toHaveLength(1);
     expect(result[0].dt_register).toEqual(new Date("2019-01-10"));
+    expect(result[0].fk_product).toEqual("1");
+    expect(result[0].fk_sellpoint).toEqual("1");
   });
-  test.todo("should be insert multiple sells");
+  test("should be insert multiple sells", async () => {
+    const result = await usecase.execute([
+      {
+        product: productRepository.data[0],
+        sellpoint: sellpointRepository.data[0],
+        value: 55,
+        date: new Date("2019-01-10"),
+      },
+      {
+        product: productRepository.data[1],
+        sellpoint: sellpointRepository.data[1],
+        value: 55,
+        date: new Date("2022-01-10"),
+      },
+    ]);
+    expect(result).toHaveLength(2);
+    expect(result[0].dt_register).toEqual(new Date("2019-01-10"));
+    expect(result[0].fk_sellpoint).toEqual("1");
+    expect(result[1].dt_register).toEqual(new Date("2022-01-10"));
+    expect(result[1].fk_sellpoint).toEqual("2");
+  });
+  test.todo("should be insert sell without date");
 });

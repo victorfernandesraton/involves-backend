@@ -152,7 +152,30 @@ export class GetSellPointsServiceB extends GetSellPoint {
 export default class SellPointRepositoryInMemory
   implements ISellPointRepository
 {
-  data: SellPoint[] = [];
+  data: SellPoint[] = [
+    new SellPoint({
+      id: "1",
+      fk_sellpointchain: new SellpointChain({
+        st_sellpointchain: "WALLMART",
+      }).id,
+      st_sellpoint: "Supermecado Big São clemente",
+      fk_sellpointtype: "2",
+      st_cnpj: "12345678910",
+
+      st_address: "v principal, São clemente",
+    }),
+
+    new SellPoint({
+      id: "2",
+      fk_sellpointchain: new SellpointChain({
+        st_sellpointchain: "FORT",
+      }).id,
+      st_cnpj: "10987654321",
+      st_sellpoint: "Fort Atacadista Campache",
+      fk_sellpointtype: "2",
+      st_address: "Campache Street, Campache",
+    }),
+  ];
   async upsertOneSellPoint(
     params: ISellPoinrInsertOneParams
   ): Promise<SellPoint> {
@@ -160,6 +183,7 @@ export default class SellPointRepositoryInMemory
       (item) => item.st_cnpj === params.cnpj || item.id === params.sellpointId
     );
     const newSellpoint = new SellPoint({
+      id: oldSellpoint?.id,
       fk_sellpointchain:
         params.data.fk_sellpointchain ?? oldSellpoint?.fk_sellpointchain,
       dt_updated: new Date(),
