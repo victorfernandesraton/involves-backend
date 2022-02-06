@@ -8,7 +8,7 @@ export interface IProductParams extends IEnttityParams {
 }
 export default class Product extends Entity {
   st_product: string;
-  fk_category: string | null = null;
+  public fk_category: string | null = null;
   id_external: string;
   bo_active: boolean = true;
   constructor(params: IProductParams) {

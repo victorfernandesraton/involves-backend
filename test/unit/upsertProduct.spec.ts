@@ -4,16 +4,17 @@ import {
   products,
   GetProductServiceA,
   GetProductServiceB,
+  ProductRepositoryInMemory,
 } from "../helper/products";
 import { categories } from "../helper/categories";
 import ProductCategory from "../../src/models/productCategory";
 import UpsertProduct from "../../src/domain/usecase/upsertProduct";
 
 describe("upsertProduct", () => {
-  const usecase = new UpsertProduct([
-    new GetProductServiceA(),
-    new GetProductServiceB(),
-  ]);
+  const usecase = new UpsertProduct(
+    [new GetProductServiceA(), new GetProductServiceB()],
+    new ProductRepositoryInMemory()
+  );
   test("should be a any data", async () => {
     const result = await usecase.execute("9990001114445");
     expect(result).toHaveProperty("st_product");

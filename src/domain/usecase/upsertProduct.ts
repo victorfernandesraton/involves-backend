@@ -19,17 +19,17 @@ export default class UpsertProduct {
   }
 
   async execute(productId: string, service: any = null): Promise<Product> {
-    let result: Product;
+    let resultRequest: Product;
     try {
       if (!service) {
         const handlers = this.services.map((item) =>
           item.getProductById(productId)
         );
-        result = await Promise.any(handlers);
+        resultRequest = await Promise.any(handlers);
       } else {
         const handler = this.services.find((item) => item.id === service);
         if (handler) {
-          result = await handler.getProductById(productId);
+          resultRequest = await handler.getProductById(productId);
         } else {
           return Promise.reject(new Error(`not find service ${service}`));
         }
@@ -37,9 +37,12 @@ export default class UpsertProduct {
     } catch (error) {
       return Promise.reject(error);
     }
-    if (result) {
+    if (resultRequest) {
       try {
-        await this.repository.upsertProductByExternalId(productId, result);
+        const result = await this.repository.upsertProductByExternalId(
+          productId,
+          resultRequest
+        );
         return result;
       } catch (error) {
         return Promise.reject(error);
