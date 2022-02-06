@@ -23,6 +23,15 @@ export const sellpointBaseB = [
     type: "Hyper Super",
   },
   {
+    name: "Supermecado Big São clemente",
+    chain: "Wallmart",
+    cnpj: "44433322211",
+    bandeira: "Big",
+    address: "Av principal, São clemente",
+    origin: "B",
+    type: "Atacado",
+  },
+  {
     name: "Fort Atacadista Campache",
     chain: "Fort",
     address: "Campache Street, Campache",
