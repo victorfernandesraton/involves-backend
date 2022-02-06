@@ -18,5 +18,13 @@
   "bugs": {
     "url": "https://github.com/victorfernandesraton/involves-backend/issues"
   },
-  "homepage": "https://github.com/victorfernandesraton/involves-backend#readme"
+  "homepage": "https://github.com/victorfernandesraton/involves-backend#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "jest": "^27.5.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.5"
+  }
 }
