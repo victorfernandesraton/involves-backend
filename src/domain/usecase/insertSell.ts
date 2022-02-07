@@ -2,6 +2,7 @@ import ISellRepository from "../../infra/repository/sell";
 import Product from "../../models/product";
 import Sell from "../../models/sell";
 import SellPoint from "../../models/sellpoint";
+import InsertSellError from "../errors/insertSellError";
 
 export interface IInsertSellParams {
   repository: ISellRepository;
@@ -38,7 +39,11 @@ export default class InsertSell {
       );
       return result;
     } catch (error) {
-      throw error;
+      if (error instanceof Error) {
+        throw new InsertSellError(error.message);
+      } else {
+        throw new InsertSellError("umknown error");
+      }
     }
   }
 }
