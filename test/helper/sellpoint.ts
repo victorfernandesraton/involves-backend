@@ -1,3 +1,8 @@
+import IAuditSellPointRepository, {
+  IAuditSellPointRepositoryInsertOneParams,
+} from "../../src/audit/infra/repository/auditSellpoint";
+import Audit, { AuditEntittyEnum } from "../../src/audit/models/audit";
+import audit from "../../src/audit/models/audit";
 import GetSellPoint from "../../src/external/service/getSellpoint";
 import {
   ISellPoinrInsertOneParams,
@@ -48,9 +53,18 @@ export const sellpointBaseB = [
 
 export const sellpoints = [...sellpointBaseA, ...sellpointBaseB];
 
+export class GetSellPointAuditRepositoryInMemory
+  implements IAuditSellPointRepository
+{
+  async insertOneAuditSellPoint(
+    params: IAuditSellPointRepositoryInsertOneParams
+  ): Promise<Audit<SellPoint>> {
+    throw new Error("Not implemented");
+  }
+}
 export class GetSellPointsServiceA extends GetSellPoint {
   constructor() {
-    super("serviceA");
+    super({ id: "serviceA", audit: new GetSellPointAuditRepositoryInMemory() });
   }
   async getSellPointByCnpj(cnpjId: string): Promise<SellPoint> {
     const response = sellpointBaseA.find((item) => item.cnpj === cnpjId);
@@ -79,6 +93,7 @@ export class GetSellPointsServiceA extends GetSellPoint {
     if (!response.length) {
       throw new Error(`Not find SellPoint by cnpj/${chainUniqueName}`);
     }
+
     return response.map(
       (item) =>
         new SellPoint({
@@ -100,7 +115,7 @@ export class GetSellPointsServiceA extends GetSellPoint {
 
 export class GetSellPointsServiceB extends GetSellPoint {
   constructor() {
-    super("serviceB");
+    super({ id: "serviceB", audit: new GetSellPointAuditRepositoryInMemory() });
   }
   async getSellPointByCnpj(cnpjId: string): Promise<SellPoint> {
     const response = sellpointBaseB.find((item) => item.cnpj === cnpjId);

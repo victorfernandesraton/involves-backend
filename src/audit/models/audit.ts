@@ -19,7 +19,7 @@ export interface IAuditParams extends IEnttityParams {
 export default class Audit<T> extends Entity {
   entity: AuditEntittyEnum;
   origin: IAuditOrigin;
-  beforeData: T;
+  beforeData?: T;
   constructor(params: IAuditParams) {
     super(params);
     this.entity = params.entity;
