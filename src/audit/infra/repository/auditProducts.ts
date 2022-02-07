@@ -1,7 +1,7 @@
 import Product from "../../../models/product";
 import Audit from "../../models/audit";
 
-export default interface IAuditProductsRepositoryInsertOneParams {
+export interface IAuditProductsRepositoryInsertOneParams {
   product: Product;
   endpoint?: string;
   request?: any;

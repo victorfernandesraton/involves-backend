@@ -1,3 +1,8 @@
+import IAuditProductsRepository, {
+  IAuditProductsRepositoryInsertOneParams,
+} from "../../src/audit/infra/repository/auditProducts";
+import Audit from "../../src/audit/models/audit";
+import audit from "../../src/audit/models/audit";
 import GetProduct from "../../src/external/service/getProduct";
 import Product from "../../src/models/product";
 import { categories } from "./categories";
@@ -25,10 +30,17 @@ export const products = [
   },
 ];
 
+export class GetProductAuditRepository implements IAuditProductsRepository {
+  insertOneAuditProduct(
+    params: IAuditProductsRepositoryInsertOneParams
+  ): Audit<Product> {
+    throw new Error("Method not implemented.");
+  }
+}
 export class GetProductServiceA extends GetProduct {
   data: any[] = products.filter((product) => product.origin === "A");
   constructor() {
-    super("A");
+    super({ id: "A", audit: new GetProductAuditRepository() });
   }
   async getProductById(productId: string): Promise<Product> {
     const product = this.data.find((item) => item.ean === productId);
@@ -50,7 +62,7 @@ export class GetProductServiceB extends GetProduct {
   data: any[] = products.filter((product) => product.origin === "B");
 
   constructor() {
-    super("serviceB");
+    super({ id: "serviceB", audit: new GetProductAuditRepository() });
   }
   async getProductById(productId: string): Promise<Product> {
     const product = this.data.find((item) => item.ean === productId);
