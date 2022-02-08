@@ -1,4 +1,5 @@
 import IAuditSellPointRepository, {
+  IAuditSellPointRepositoryGetParams,
   IAuditSellPointRepositoryInsertOneParams,
 } from "../../src/audit/infra/repository/auditSellpoint";
 import Audit, { AuditEntittyEnum } from "../../src/audit/models/audit";
@@ -56,6 +57,11 @@ export const sellpoints = [...sellpointBaseA, ...sellpointBaseB];
 export class GetSellPointAuditRepositoryInMemory
   implements IAuditSellPointRepository
 {
+  getAuditByEndpoint(
+    params: IAuditSellPointRepositoryGetParams
+  ): Promise<Audit<SellPoint>[]> {
+    throw new Error("Method not implemented.");
+  }
   async insertOneAuditSellPoint(
     params: IAuditSellPointRepositoryInsertOneParams
   ): Promise<Audit<SellPoint>> {

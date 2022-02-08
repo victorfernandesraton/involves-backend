@@ -1,5 +1,6 @@
 import Fastify, { FastifyInstance, RouteShorthandOptions } from "fastify";
 import UpsertSellPoint from "../src/domain/usecase/upsertSellpoint";
+import { GetSellPointsA } from "../src/external/getSellpointFromA";
 import SellPointRepositoryInMemory, {
   GetSellPointsServiceA,
   GetSellPointsServiceB,
@@ -8,32 +9,14 @@ import SellPointController from "./controllers/sellpoint";
 
 const server: FastifyInstance = Fastify({});
 
-const opts: RouteShorthandOptions = {
-  schema: {
-    response: {
-      200: {
-        type: "object",
-        properties: {
-          pong: {
-            type: "string",
-          },
-        },
-      },
-    },
-  },
-};
-
+const getSellpoint = new GetSellPointsA();
 const sellPointController = SellPointController({
   upsertSellpoint: new UpsertSellPoint({
     repository: new SellPointRepositoryInMemory(),
-    services: [new GetSellPointsServiceA(), new GetSellPointsServiceB()],
+    services: [getSellpoint],
   }),
 });
 server.register(sellPointController, { prefix: "/sellpoint" });
-
-server.get("/ping", opts, async (request, reply) => {
-  return { pong: "it worked!" };
-});
 
 const start = async () => {
   try {
