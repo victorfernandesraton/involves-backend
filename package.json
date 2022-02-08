@@ -4,6 +4,7 @@
   "description": "Backend for involves challange",
   "main": "index.js",
   "scripts": {
+    "serve:dev": "ts-node-dev app/server",
     "test": "jest",
     "test:unit": "jest ./test/unit"
   },
