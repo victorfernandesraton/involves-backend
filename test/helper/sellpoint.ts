@@ -6,6 +6,7 @@ import Audit, { AuditEntittyEnum } from "../../src/audit/models/audit";
 import audit from "../../src/audit/models/audit";
 import GetSellPoint from "../../src/external/service/getSellpoint";
 import {
+  ISellpintGetParams,
   ISellPoinrInsertOneParams,
   ISellPointRepository,
 } from "../../src/infra/repository/sellPoint";
@@ -173,6 +174,9 @@ export class GetSellPointsServiceB extends GetSellPoint {
 export default class SellPointRepositoryInMemory
   implements ISellPointRepository
 {
+  getSellPoints(params: ISellpintGetParams): Promise<SellPoint[]> {
+    throw new Error("Method not implemented.");
+  }
   data: SellPoint[] = [
     new SellPoint({
       id: "1",

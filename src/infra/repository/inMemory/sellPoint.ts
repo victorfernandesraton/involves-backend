@@ -1,16 +1,29 @@
 import SellPoint from "../../../models/sellpoint";
 import SellpointChain from "../../../models/sellpointChain";
-import { ISellPoinrInsertOneParams, ISellPointRepository } from "../sellPoint";
+import {
+  ISellpintGetParams,
+  ISellPoinrInsertOneParams,
+  ISellPointRepository,
+} from "../sellPoint";
 
+export const chainsData = [
+  new SellpointChain({
+    st_sellpointchain: "WALLMART",
+    id: "1",
+  }),
+  new SellpointChain({
+    st_sellpointchain: "FORT",
+    id: "2",
+  }),
+];
 export default class SellPointRepositoryInMemory
   implements ISellPointRepository
 {
+  chains = [...chainsData];
   data: SellPoint[] = [
     new SellPoint({
       id: "1",
-      fk_sellpointchain: new SellpointChain({
-        st_sellpointchain: "WALLMART",
-      }).id,
+      fk_sellpointchain: chainsData[0].id,
       st_sellpoint: "Supermecado Big São clemente",
       fk_sellpointtype: "2",
       st_cnpj: "12345678910",
@@ -19,15 +32,32 @@ export default class SellPointRepositoryInMemory
 
     new SellPoint({
       id: "2",
-      fk_sellpointchain: new SellpointChain({
-        st_sellpointchain: "FORT",
-      }).id,
+      fk_sellpointchain: chainsData[1].id,
       st_cnpj: "10987654321",
       st_sellpoint: "Fort Atacadista Campache",
       fk_sellpointtype: "2",
       st_address: "Campache Street, Campache",
     }),
   ];
+  getSellPoints = async (params: ISellpintGetParams): Promise<SellPoint[]> => {
+    return this.data.filter((item) =>
+      params.cnpj
+        ? params.cnpj === item.st_cnpj
+        : true && params.name
+        ? item.st_sellpoint.toUpperCase().includes(params.name.toUpperCase())
+        : true
+        ? params.chain
+          ? this.chains.find((chain) =>
+              params.chain
+                ? chain.st_unique_name
+                    .toUpperCase()
+                    .includes(params?.chain?.toUpperCase())
+                : false
+            )?.id
+          : true
+        : true
+    );
+  };
   upsertOneSellPoint = async (
     params: ISellPoinrInsertOneParams
   ): Promise<SellPoint> => {
