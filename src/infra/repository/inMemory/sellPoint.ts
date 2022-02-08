@@ -62,21 +62,25 @@ export default class SellPointRepositoryInMemory
     params: ISellPoinrInsertOneParams
   ): Promise<SellPoint> => {
     const oldSellpoint = this.data.find(
-      (item) => item.st_cnpj === params.cnpj || item.id === params.sellpointId
+      (item) =>
+        item.st_cnpj === params.cnpj ||
+        item.st_cnpj === params.data.st_cnpj ||
+        item.id === params.sellpointId ||
+        item.id === params.data.id
     );
     const newSellpoint = new SellPoint({
       id: oldSellpoint?.id,
       fk_sellpointchain:
         params.data.fk_sellpointchain ?? oldSellpoint?.fk_sellpointchain,
       dt_updated: new Date(),
+      st_cnpj: params.data.st_cnpj ?? oldSellpoint?.st_cnpj,
       st_sellpoint: params.data.st_sellpoint ?? oldSellpoint?.st_sellpoint,
       fk_sellpointtype:
         params.data.fk_sellpointtype ?? oldSellpoint?.fk_sellpointtype,
     });
-    this.data = this.data.filter(
-      (item) =>
-        item.st_cnpj != newSellpoint.st_cnpj || newSellpoint.id != item.id
-    );
+    this.data = this.data
+      //   .filter((item) => item.st_cnpj !== newSellpoint.st_cnpj)
+      .filter((item) => item.id !== newSellpoint.id);
     this.data.push(newSellpoint);
     return newSellpoint;
   };

@@ -18,7 +18,7 @@ export class GetSellPointsA extends GetSellPoint {
     type?: string;
   }[] = [
     {
-      name: "Supermecado Big Barreiros",
+      name: "Supermecado Bi",
       chain: "Wallmart",
       cnpj: "12345678910",
       bandeira: "Big",
@@ -27,7 +27,7 @@ export class GetSellPointsA extends GetSellPoint {
       type: "Hyper Super",
     },
     {
-      name: "Supermecado Big São clemente",
+      name: "Supermecado Big São",
       chain: "Wallmart",
       cnpj: "44433322211",
       bandeira: "Big",
