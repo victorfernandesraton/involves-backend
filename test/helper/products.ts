@@ -4,6 +4,10 @@ import IAuditProductsRepository, {
 import Audit from "../../src/audit/models/audit";
 import audit from "../../src/audit/models/audit";
 import GetProduct from "../../src/external/service/getProduct";
+import {
+  IProductRepository,
+  IProductRepositoryGetParams,
+} from "../../src/infra/repository/product";
 import Product from "../../src/models/product";
 import { categories } from "./categories";
 
@@ -78,7 +82,12 @@ export class GetProductServiceB extends GetProduct {
   }
 }
 
-export class ProductRepositoryInMemory {
+export class ProductRepositoryInMemory implements IProductRepository {
+  getProducts = async (
+    params: IProductRepositoryGetParams
+  ): Promise<Product[]> => {
+    throw new Error("Method not implemented.");
+  };
   data: Product[] = [
     new Product({
       id_external: "9990001114445",
