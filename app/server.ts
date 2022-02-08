@@ -1,4 +1,4 @@
-import Fastify, { FastifyInstance, RouteShorthandOptions } from "fastify";
+import Fastify, { FastifyInstance } from "fastify";
 import GetProduct from "../src/domain/usecase/getProduct";
 import GetSellPoint from "../src/domain/usecase/getSellpoints";
 import UpsertProduct from "../src/domain/usecase/upsertProduct";
