@@ -1,10 +1,7 @@
 import Fastify, { FastifyInstance, RouteShorthandOptions } from "fastify";
 import UpsertSellPoint from "../src/domain/usecase/upsertSellpoint";
 import { GetSellPointsA } from "../src/external/getSellpointFromA";
-import SellPointRepositoryInMemory, {
-  GetSellPointsServiceA,
-  GetSellPointsServiceB,
-} from "../test/helper/sellpoint";
+import SellPointRepositoryInMemory from "../src/infra/repository/inMemory/sellPoint";
 import SellPointController from "./controllers/sellpoint";
 
 const server: FastifyInstance = Fastify({});

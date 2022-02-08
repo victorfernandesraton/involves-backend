@@ -212,7 +212,7 @@ export default class SellPointRepositoryInMemory
       fk_sellpointtype:
         params.data.fk_sellpointtype ?? oldSellpoint?.fk_sellpointtype,
     });
-    this.data.filter(
+    this.data = this.data.filter(
       (item) =>
         item.st_cnpj != newSellpoint.st_cnpj || newSellpoint.id != item.id
     );

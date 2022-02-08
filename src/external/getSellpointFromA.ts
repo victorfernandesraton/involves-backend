@@ -4,7 +4,11 @@ import SellpointChain from "../models/sellpointChain";
 import GetSellPoint from "./service/getSellpoint";
 
 export class GetSellPointsA extends GetSellPoint {
-  readonly itens: {
+  chains = [
+    new SellpointChain({ st_sellpointchain: "WALLMART" }),
+    new SellpointChain({ st_sellpointchain: "FORT" }),
+  ];
+  itens: {
     name: string;
     chain: string;
     cnpj?: string;
@@ -56,9 +60,15 @@ export class GetSellPointsA extends GetSellPoint {
       throw new Error(`Not find SellPoint by cnpj/${cnpjId}`);
     }
     const data = new SellPoint({
-      fk_sellpointchain: new SellpointChain({
-        st_sellpointchain: response.chain,
-      }).id,
+      fk_sellpointchain:
+        this.chains.find(
+          (item) =>
+            item.st_sellpointchain.toUpperCase() ===
+            response.chain.toUpperCase()
+        )?.id ??
+        new SellpointChain({
+          st_sellpointchain: response.chain,
+        }).id,
       fk_sellpointtype: "1",
       st_address: response.address,
       st_sellpoint: response.name,
@@ -69,7 +79,6 @@ export class GetSellPointsA extends GetSellPoint {
   getSellPointsByChain = async (
     chainUniqueName: string
   ): Promise<SellPoint[]> => {
-    console.log(this?.itens, "sss");
     const response = this.itens.filter(
       (item) => item.chain.toUpperCase().replace(" ", "_") === chainUniqueName
     );
@@ -85,9 +94,15 @@ export class GetSellPointsA extends GetSellPoint {
       response.map(
         (item) =>
           new SellPoint({
-            fk_sellpointchain: new SellpointChain({
-              st_sellpointchain: item.chain,
-            }).id,
+            fk_sellpointchain:
+              this.chains.find(
+                (chain) =>
+                  chain.st_sellpointchain.toUpperCase() ===
+                  item.chain.toUpperCase()
+              )?.id ??
+              new SellpointChain({
+                st_sellpointchain: item.chain,
+              }).id,
             fk_sellpointtype: "1",
             st_address: item.address,
             st_sellpoint: item.name,
