@@ -19,7 +19,7 @@ export default class InsertSell {
     this.repository = params.repository;
   }
 
-  private parseParams(params: IInsertSellExecuteParams): Sell {
+  private parseParams = (params: IInsertSellExecuteParams): Sell => {
     let value = params;
     if (!params.date) {
       value.date = new Date();
@@ -30,9 +30,9 @@ export default class InsertSell {
       nm_value: value.value,
       dt_register: value.date,
     });
-  }
+  };
 
-  async execute(params: IInsertSellExecuteParams[]): Promise<Sell[]> {
+  execute = async (params: IInsertSellExecuteParams[]): Promise<Sell[]> => {
     try {
       const result = await this.repository.insertManySell(
         params.map((item) => this.parseParams(item))
@@ -45,5 +45,5 @@ export default class InsertSell {
         throw new InsertSellError("umknown error");
       }
     }
-  }
+  };
 }

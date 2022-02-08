@@ -19,7 +19,10 @@ export default class UpsertProduct {
     this.repository = repository;
   }
 
-  async execute(productId: string, service: any = null): Promise<Product> {
+  execute = async (
+    productId: string,
+    service: any = null
+  ): Promise<Product> => {
     let resultRequest: Product;
     try {
       if (!service) {
@@ -55,5 +58,5 @@ export default class UpsertProduct {
     } else {
       return Promise.reject(new Error(`Not find product/${productId}`));
     }
-  }
+  };
 }

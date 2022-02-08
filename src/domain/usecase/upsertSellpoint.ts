@@ -37,10 +37,10 @@ export default class UpsertSellPoint {
     this.repository = params.repository;
   }
 
-  private getHandlersByType(
+  private getHandlersByType = (
     type: GetHandlersByTypeEnum,
     handler: GetSellPoint
-  ): TypeGetHandlersByTypeReturn {
+  ): TypeGetHandlersByTypeReturn => {
     switch (type) {
       case GetHandlersByTypeEnum.CHAIN:
         return handler.getSellPointsByChain;
@@ -48,12 +48,12 @@ export default class UpsertSellPoint {
       default:
         return handler.getSellPointByCnpj;
     }
-  }
+  };
 
-  private parseParansByHandlerType(
+  private parseParansByHandlerType = (
     type: GetHandlersByTypeEnum,
     params: IUpsertSellPointExecuteParams
-  ): string {
+  ): string => {
     switch (type) {
       case GetHandlersByTypeEnum.CHAIN:
         if (!params.chain) {
@@ -67,12 +67,12 @@ export default class UpsertSellPoint {
         }
         return params.cnpj;
     }
-  }
+  };
 
-  async execute(
+  execute = async (
     params: IUpsertSellPointExecuteParams,
     service: string | null = null
-  ): Promise<SellPoint[]> {
+  ): Promise<SellPoint[]> => {
     let data: SellPoint[] = [];
     let response: SellPoint[] | SellPoint;
     let type = params.chain
@@ -136,5 +136,5 @@ export default class UpsertSellPoint {
       }
     }
     return data;
-  }
+  };
 }
